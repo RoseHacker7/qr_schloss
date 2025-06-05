@@ -1,5 +1,324 @@
-<html>
-  <body>
-    <h1>Hello world</h1>
-  </body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schloss Wiehe - Eine Reise durch Zeit und Stein</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 50%, #2c3e50 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 50px;
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+            border: 1px solid #e8e8e8;
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 32px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            color: #7f8c8d;
+            margin-bottom: 40px;
+            font-size: 18px;
+            font-style: italic;
+            font-weight: 300;
+        }
+
+        .language-selection {
+            display: block;
+        }
+
+        .language-btn {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            width: 100%;
+            padding: 20px 25px;
+            margin: 15px 0;
+            background: #f8f9fc;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            font-size: 20px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: #2c3e50;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .language-btn:hover {
+            background: #ffffff;
+            border-color: #3498db;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(52, 152, 219, 0.15);
+        }
+
+        .flag {
+            font-size: 32px;
+            margin-right: 15px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+        }
+
+        .audio-player {
+            display: none;
+        }
+
+        .back-btn {
+            background: #95a5a6;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 25px;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .back-btn:hover {
+            background: #7f8c8d;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        audio {
+            width: 100%;
+            margin: 25px 0;
+            border-radius: 8px;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .control-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 14px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 8px rgba(52, 152, 219, 0.3);
+        }
+
+        .control-btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(52, 152, 219, 0.4);
+        }
+
+        .control-btn:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 20px;
+            }
+            
+            .language-btn {
+                font-size: 16px;
+                padding: 12px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Schloss Wiehe</h1>
+        <p class="subtitle">Eine Reise durch Zeit und Stein</p>
+        
+        <!-- Language Selection -->
+        <div id="languageSelection" class="language-selection">
+            <button class="language-btn" onclick="selectLanguage('DE', 'Deutsch')">
+                <span class="flag">🇩🇪</span> Deutsch
+            </button>
+            <button class="language-btn" onclick="selectLanguage('EN', 'English')">
+                <span class="flag">🇬🇧</span> English
+            </button>
+            <button class="language-btn" onclick="selectLanguage('AL', 'Shqip')">
+                <span class="flag">🇦🇱</span> Shqip
+            </button>
+            <button class="language-btn" onclick="selectLanguage('AR', 'العربية')">
+                <span class="flag">🇸🇦</span> العربية
+            </button>
+        </div>
+
+        <!-- Audio Player -->
+        <div id="audioPlayer" class="audio-player">
+            <button class="back-btn" onclick="goBack()">← Zurück zu den Sprachen</button>
+            
+            <audio id="audioElement" controls preload="metadata">
+                Ihr Browser unterstützt das Audio-Element nicht.
+            </audio>
+            
+            <div class="controls">
+                <button class="control-btn" onclick="rewind()">⏪ -10s</button>
+                <button class="control-btn" onclick="togglePlayPause()" id="playPauseBtn">▶️ Abspielen</button>
+                <button class="control-btn" onclick="fastForward()">⏩ +10s</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const audio = document.getElementById('audioElement');
+        const playPauseBtn = document.getElementById('playPauseBtn');
+        
+        function selectLanguage(langCode, langName) {
+            // Hide language selection and show audio player
+            document.getElementById('languageSelection').style.display = 'none';
+            document.getElementById('audioPlayer').style.display = 'block';
+            
+            // Set language-specific text
+            const languageTexts = {
+                'DE': {
+                    title: 'Schloss Wiehe',
+                    subtitle: 'Eine Reise durch Zeit und Stein',
+                    back: '← Zurück zu den Sprachen',
+                    play: '▶️ Abspielen',
+                    pause: '⏸️ Pause'
+                },
+                'EN': {
+                    title: 'Schloss Wiehe',
+                    subtitle: 'A Journey Through Time and Stone',
+                    back: '← Back to Languages',
+                    play: '▶️ Play',
+                    pause: '⏸️ Pause'
+                },
+                'AL': {
+                    title: 'Schloss Wiehe',
+                    subtitle: 'Një Udhëtim Përmes Kohës dhe Gurit',
+                    back: '← Kthehu te Gjuhët',
+                    play: '▶️ Luaj',
+                    pause: '⏸️ Ndalo'
+                },
+                'AR': {
+                    title: 'شلوس ويه',
+                    subtitle: 'رحلة عبر الزمن والحجر',
+                    back: '← العودة إلى اللغات',
+                    play: '▶️ تشغيل',
+                    pause: '⏸️ إيقاف'
+                }
+            };
+            
+            const texts = languageTexts[langCode];
+            
+            // Update MAIN title at top of page to selected language
+            document.querySelector('h1').textContent = texts.title;
+            document.querySelector('.subtitle').textContent = texts.subtitle;
+            
+            // Update back button text
+            document.querySelector('.back-btn').textContent = texts.back;
+            playPauseBtn.textContent = texts.play;
+            
+            // Store current language texts for use in other functions
+            window.currentTexts = texts;
+            
+            // Set the audio source
+            audio.src = `${langCode}_Schloss Wiehe_ A Journey Through Time and Stone.mp3`;
+            audio.load();
+            
+            // Add error handling
+            audio.onerror = function() {
+                alert('Audio file could not be loaded. Make sure the file exists.');
+            };
+            
+            audio.onloadeddata = function() {
+                // Audio is ready to play
+                console.log('Audio loaded successfully');
+            };
+        }
+        
+        function goBack() {
+            // Stop audio and reset
+            audio.pause();
+            audio.currentTime = 0;
+            playPauseBtn.textContent = '▶️ Abspielen';
+            
+            // Reset main title back to German
+            document.querySelector('h1').textContent = 'Schloss Wiehe';
+            document.querySelector('.subtitle').textContent = 'Eine Reise durch Zeit und Stein';
+            
+            // Show language selection and hide audio player
+            document.getElementById('languageSelection').style.display = 'block';
+            document.getElementById('audioPlayer').style.display = 'none';
+        }
+        
+        function togglePlayPause() {
+            if (audio.paused) {
+                audio.play().then(() => {
+                    playPauseBtn.textContent = window.currentTexts ? window.currentTexts.pause : '⏸️ Pause';
+                }).catch((error) => {
+                    console.error('Error playing audio:', error);
+                    alert('Could not play audio. Make sure the file is loaded.');
+                });
+            } else {
+                audio.pause();
+                playPauseBtn.textContent = window.currentTexts ? window.currentTexts.play : '▶️ Abspielen';
+            }
+        }
+        
+        function rewind() {
+            audio.currentTime = Math.max(0, audio.currentTime - 10);
+        }
+        
+        function fastForward() {
+            audio.currentTime = Math.min(audio.duration, audio.currentTime + 10);
+        }
+        
+        // Update play/pause button when audio ends
+        audio.addEventListener('ended', function() {
+            playPauseBtn.textContent = window.currentTexts ? window.currentTexts.play : '▶️ Abspielen';
+        });
+        
+        // Update play/pause button when audio plays/pauses
+        audio.addEventListener('play', function() {
+            playPauseBtn.textContent = window.currentTexts ? window.currentTexts.pause : '⏸️ Pause';
+        });
+        
+        audio.addEventListener('pause', function() {
+            playPauseBtn.textContent = window.currentTexts ? window.currentTexts.play : '▶️ Abspielen';
+        });
+    </script>
+</body>
 </html>
